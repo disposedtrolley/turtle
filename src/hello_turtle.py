@@ -52,6 +52,13 @@ def draw_square(t, size):
         store_position_data(L, t)
     return L
 
+def draw_triangles_until_escaped(number):
+    t = turtle.Turtle()
+    for i in range(1, number):
+        if not escaped(t.position()):
+            t.forward(i*2)
+            t.right(120)
+
 def store_position_data(L, t):
     position = t.position()
     L.append([position[0], position[1], escaped(position)])
@@ -60,5 +67,6 @@ if __name__ == "__main__":
     turtle.setworldcoordinates(-70, -70, 70, 70)
     draw_bag()
     draw_line()
-    draw_squares_until_escaped(500)
+    #draw_squares_until_escaped(500)
+    draw_triangles_until_escaped(50)
     turtle.mainloop()
