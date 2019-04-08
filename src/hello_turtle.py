@@ -1,6 +1,8 @@
 import turtle
 import pickle
 import random
+import argparse
+import inspect
 
 def draw_bag():
     turtle.shape("turtle")
@@ -90,11 +92,27 @@ def store_position_data(L, t):
     L.append([position[0], position[1], escaped(position)])
 
 if __name__ == "__main__":
-    turtle.setworldcoordinates(-70, -70, 70, 70)
-    draw_bag()
-    draw_line()
-    #draw_squares_until_escaped(500)
-    #draw_triangles_until_escaped(50)
-    #draw_spirals_until_escaped()
-    draw_random_spriangles()
-    turtle.mainloop()
+    fns = {
+        "line": draw_line,
+        "squares": draw_squares_until_escaped,
+        "triangles": draw_triangles_until_escaped,
+        "spirangles": draw_spirals_until_escaped
+    }
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--function", choices=fns, help="One of " + ",".join(fns.keys()))
+    parser.add_argument("-n", "--number", default=50, type=int, help="How many?")
+    args = parser.parse_args()
+
+    try:
+        f = fns[args.function]
+        turtle.setworldcoordinates(-70, -70, 70, 70)
+        draw_bag()
+        turtle.hideturtle()
+        if len(inspect.getargspec(f).args) == 1:
+            f(args.number)
+        else:
+            f()
+        turtle.mainloop()
+    except KeyError:
+        parser.print_help()
