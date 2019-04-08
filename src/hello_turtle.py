@@ -27,22 +27,21 @@ def draw_line():
         t.left(angle)
         t.forward(step)
 
-def draw_squares_until_escaped():
+def draw_squares_until_escaped(n):
     t = turtle.Turtle()
-    L = draw_squares()
+    L = draw_squares(n)
     with open("data_square", "w") as f:
         pickle.dump(L, f)
 
-def draw_squares():
+def draw_squares(number):
     t = turtle.Turtle()
     L = []
-    i = 1
-    while not escaped(t.position()):
-        t.penup()
-        t.goto(-i, -i)
-        t.pendown()
-        L.extend(draw_square(t, i*2))
-        i += 1
+    for i in range(1, number + 1):
+        if not escaped(t.position()):
+            t.penup()
+            t.goto(-i, -i)
+            t.pendown()
+            L.extend(draw_square(t, i*2))
     return L
 
 def draw_square(t, size):
@@ -61,5 +60,5 @@ if __name__ == "__main__":
     turtle.setworldcoordinates(-70, -70, 70, 70)
     draw_bag()
     draw_line()
-    draw_squares_until_escaped()
+    draw_squares_until_escaped(500)
     turtle.mainloop()
